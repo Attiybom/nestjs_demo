@@ -9,4 +9,16 @@ export class AppController {
   getHello(): string {
     return this.appService.getHello();
   }
+
+  @Get('test')
+  getTest(): any {
+    return {
+      code: 0,
+      msg: '请求成功',
+      data: {
+        id: 101,
+        username: 'coder',
+      },
+    };
+  }
 }
