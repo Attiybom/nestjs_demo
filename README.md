@@ -1,4 +1,39 @@
-##
+## 多环境配置
+* 安装依赖
+```js
+pnpm i --save @nestjs/config@2.2.0
+```
+### 创建环境文件
+1. 根目录下创建.env文件
+
+
+### 使用配置
+1. app.module.ts文件引入
+```js
+import { ConfigModule } from '@nestjs/config';
+
+@Module({
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    UserModule,
+  ],
+  controllers: [],
+  providers: [],
+})
+
+```
+ConfigModule.forRoot({ isGlobal: true }) : 读取根目录下的env文件, 且设为全局
+采取枚举的方式引入环境变量
+```ts
+export enum ConfigEnum {
+  DB = 'DB',
+  DB_HOST = 'DB_HOST',
+}
+
+```
+
 
 
 
