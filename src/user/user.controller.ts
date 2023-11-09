@@ -14,6 +14,13 @@ export class UserController {
   getUsers(): any {
     const db = this.configService.get(ConfigEnum.DB);
     console.log('db', db);
+
+    const url = this.configService.get(`DB_URL`);
+    console.log('url', url);
+
+    const port = this.configService.get(`DB_PORT`);
+    console.log('port', port);
+
     return this.userService.getUsers();
   }
 
