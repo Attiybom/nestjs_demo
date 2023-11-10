@@ -34,8 +34,72 @@ export enum ConfigEnum {
 
 ```
 
+2. 使用envFilePath属性可以指定读取环境文件
+```ts
 
 
+```
+
+3. 安装cross-env帮助我们设置process.env.NODE_ENV
+```ts
+// package.json
+// 把其中start:dev等几个命令进行改造
+  "scripts": {
+    ...,
+    "start:dev": "nest build --webpack --webpackPath webpack-hmr.config.js --watch",
+    "start:debug": "nest start --debug --watch",
+    "start:prod": "node dist/main",
+  },
+
+```
+3.1 对 app.modules 进行改造
+```ts
+
+const envFilePath = `.env.${process.env.NODE_ENV || `development`}`;
+
+@Module({
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath, // 这里直接使用envFilePath
+    }),
+    UserModule,
+  ],
+  controllers: [],
+  providers: [],
+})
+
+```
+
+4. .env文件作为公共的环境文件
+* 通过dotenv来读取.env文件
+* 安装依赖
+```js
+pnpm i dotenv
+```
+
+对 app.modules 进行改造
+```ts
+import * as dotenv from 'dotenv';
+
+@Module({
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath,
+      load: [() => dotenv.config({ path: '.env' })], //利用dotenv读取根目录的下.env文件
+    }),
+    UserModule,
+  ],
+  controllers: [],
+  providers: [],
+})
+
+```
+
+如果.env.development / .env.production 文件中的变量与.env 有冲突，
+则会优先使用前者的，否则以.env为主，这就达到了使用.env作为公共的环境配置文件，
+另外其他环境配置文件也可以针对特定变量进行覆盖配置
 
 ## 热重载
 1. 安装依赖
@@ -73,3 +137,9 @@ bootstrap();
 ```
 
 5. 执行
+
+
+
+
+## docker跑mysql
+![Alt text](image.png)
