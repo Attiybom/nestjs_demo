@@ -6,6 +6,12 @@ import * as joi from 'joi';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { ConfigEnum } from './enum/config.enum';
 
+// entity
+import { User } from './user/user.entity';
+import { Profile } from './user/profile.entity';
+import { Roles } from './roles/roles.entity';
+import { Logs } from './logs/logs.entity';
+
 // 环境文件路径
 const envFilePath = `.env.${process.env.NODE_ENV || `development`}`;
 
@@ -41,7 +47,7 @@ const envFilePath = `.env.${process.env.NODE_ENV || `development`}`;
           username: configService.get(ConfigEnum.DB_USERNAME),
           password: configService.get(ConfigEnum.DB_PASSWORD),
           database: configService.get(ConfigEnum.DB_DATABASE),
-          entities: [],
+          entities: [Roles, User, Profile, Logs],
           // 同步本地的schema与数据库 => 初始化的时候使用
           synchronize: true,
           logging: ['error'],
